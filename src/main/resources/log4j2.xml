@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="BASE_DIR">./logs</Property>
+        <Property name="FILE_NAME">rest-cms-java.log</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${PATTERN}"/>
+        </Console>
+        <RollingRandomAccessFile name="LogRotate"
+                                 fileName="${BASE_DIR}/${FILE_NAME}"
+                                 filePattern="${BASE_DIR}/${FILE_NAME}-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 0 * * ?"/>
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="warnLogger" level="warn">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogRotate"/>
+        </Logger>
+        <Logger name="errorLogger" level="error">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogRotate"/>
+        </Logger>
+        <Logger name="debugLogger" level="debug">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LogRotate"/>
+        </Root>
+    </Loggers>
+</Configuration>

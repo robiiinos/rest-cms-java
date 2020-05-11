@@ -8,8 +8,6 @@ import spark.Response;
 import spark.Service;
 
 public abstract class Server {
-    protected static final Logger logger = LogManager.getLogger(Server.class);
-
     private final Service apiService;
 
     private static final int minThreads = 4;
@@ -18,6 +16,8 @@ public abstract class Server {
 
     private static final String contentTypeHeader = "application/json;charset=UTF-8";
     private static final String serverHeader = "";
+
+    protected static final Logger logger = LogManager.getLogger(Server.class);
 
     public Server (final int port) {
         // Ignite Spark Service with a given Port number.

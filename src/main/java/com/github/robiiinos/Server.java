@@ -1,5 +1,6 @@
 package com.github.robiiinos;
 
+import com.github.robiiinos.transformer.JsonTransformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Request;
@@ -23,8 +24,14 @@ public abstract class Server {
         apiService = Service.ignite();
         apiService.port(port);
 
+        // Note: Service parameters are set below, before
+        // the Route mapping, to avoid inappropriate state.
+
         // Set the min/max threads and timeOut for Jetty Server.
         apiService.threadPool(maxThreads, minThreads, maxTimeOut);
+
+        // Set the default Response Transformer to custom class with Gson.
+        apiService.defaultResponseTransformer(new JsonTransformer());
     }
 
     protected final void start() {

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Builder
 public class ArticleTranslation {
     private int id;
+    private int articleId;
     private String title;
     private String content;
     private Language locale;

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter @Setter
 @Builder
 public class Language {
-    public int id;
-    public String name;
-    public String locale;
+    private int id;
+    private String name;
+    private String locale;
 }

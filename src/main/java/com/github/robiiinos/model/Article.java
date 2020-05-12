@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter @Setter
 @Builder
 public class Article {
-    public int id;
-    public String slug;
+    private int id;
+    private String slug;
 }

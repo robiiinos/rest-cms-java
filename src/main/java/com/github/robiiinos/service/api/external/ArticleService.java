@@ -1,8 +1,14 @@
 package com.github.robiiinos.service.api.external;
 
+import com.github.robiiinos.dto.ArticleDto;
+import com.github.robiiinos.model.Article;
+import org.modelmapper.ModelMapper;
 import spark.Request;
 import spark.Response;
 import spark.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArticleService {
     private static final String PATH = "articles";
@@ -27,5 +33,15 @@ public class ArticleService {
             });
 
         });
+    }
+
+    private ArticleDto toDto(Article article) {
+        return new ModelMapper().map(article, ArticleDto.class);
+    }
+
+    private List<ArticleDto> toDto(List<Article> articles) {
+        return articles.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 }

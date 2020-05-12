@@ -4,7 +4,6 @@ import com.github.robiiinos.service.PropertyService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import javax.sql.DataSource;
 import java.util.Properties;
 
 public final class ReadDataSource {
@@ -30,7 +29,7 @@ public final class ReadDataSource {
     private ReadDataSource() {
     }
 
-    public static DataSource getDataSource() {
-        return dataSource.getDataSource();
+    public static HikariDataSource getDataSource() {
+        return dataSource;
     }
 }

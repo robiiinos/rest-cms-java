@@ -1,18 +1,13 @@
 package com.github.robiiinos.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum Language {
-    ENGLISH("en"),
-    CHINESE("cn"),
-    FRENCH("fr"),
-    GERMAN("de"),
-    SPANISH("es"),
-    ITALIAN("it");
-
-    String locale;
+@Getter @Setter
+@Builder
+public class Language {
+    public int id;
+    public String name;
+    public String locale;
 }

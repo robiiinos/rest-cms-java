@@ -1,5 +1,6 @@
 package com.github.robiiinos;
 
+import com.github.robiiinos.service.FlywayService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,6 +8,11 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
+        // Run migrations on start.
+        // Note: This is to ensure database state.
+        FlywayService.runMigrations();
+        logger.info("Database has been migrated.");
+
         // Start the server for the public API.
         final PublicServer publicServer = new PublicServer(8080);
         publicServer.start();

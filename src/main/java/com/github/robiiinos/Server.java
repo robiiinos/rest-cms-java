@@ -1,6 +1,7 @@
 package com.github.robiiinos;
 
 import com.github.robiiinos.transformer.JsonTransformer;
+import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Request;
@@ -66,4 +67,13 @@ public abstract class Server {
     protected abstract void registerRoutes(final Service apiService);
 
     protected abstract void registerExceptions(final Service apiService);
+
+    protected final String buildErrorPayload(String message) {
+        JsonObject object = new JsonObject();
+
+        object.addProperty("success", "false");
+        object.addProperty("message", message);
+
+        return object.toString();
+    }
 }

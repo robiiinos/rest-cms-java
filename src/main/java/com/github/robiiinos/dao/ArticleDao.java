@@ -9,6 +9,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
+import org.jooq.exception.NoDataFoundException;
 import org.jooq.impl.DSL;
 
 import java.util.List;
@@ -46,6 +47,10 @@ public class ArticleDao {
                 .and(ARTICLE_TRANSLATIONS.LOCALE.eq(language))
                 .orderBy(ARTICLES.ID)
                 .fetchOne();
+
+        if (article == null) {
+            throw new NoDataFoundException();
+        }
 
         return mapToDto(article);
     }

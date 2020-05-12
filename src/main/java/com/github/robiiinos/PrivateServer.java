@@ -1,5 +1,6 @@
 package com.github.robiiinos;
 
+import com.github.robiiinos.service.api.internal.ArticleService;
 import spark.Service;
 
 public class PrivateServer extends Server {
@@ -9,7 +10,7 @@ public class PrivateServer extends Server {
 
     @Override
     protected void registerRoutes(final Service apiService) {
-        //
+        new ArticleService(apiService);
 
         logger.info("Private routes have been registered.");
     }

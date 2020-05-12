@@ -3,6 +3,8 @@ package com.github.robiiinos.dao;
 import com.github.robiiinos.datasource.ReadDataSource;
 import com.github.robiiinos.datasource.WriteDataSource;
 import com.github.robiiinos.dto.ArticleDto;
+import com.github.robiiinos.request.CreateArticleRequest;
+import com.github.robiiinos.request.UpdateArticleRequest;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -18,7 +20,7 @@ public class ArticleDao {
     private static final SQLDialect dialect = SQLDialect.MYSQL;
 
     private static final DSLContext readContext = DSL.using(ReadDataSource.getDataSource(), dialect);
-    // private static final DSLContext writeContext = DSL.using(WriteDataSource.getDataSource(), dialect);
+    private static final DSLContext writeContext = DSL.using(WriteDataSource.getDataSource(), dialect);
 
     public ArticleDao() {
     }
@@ -46,6 +48,25 @@ public class ArticleDao {
                 .fetchOne();
 
         return mapToDto(article);
+    }
+
+    public final int create(CreateArticleRequest articleRequest) {
+        return writeContext.insertInto(ARTICLES)
+                .set(ARTICLES.SLUG, articleRequest.getSlug())
+                .execute();
+    }
+
+    public final int update(UpdateArticleRequest articleRequest, String slug) {
+        return writeContext.update(ARTICLES)
+                .set(ARTICLES.SLUG, articleRequest.getSlug())
+                .where(ARTICLES.SLUG.eq(slug))
+                .execute();
+    }
+
+    public final int delete(String slug) {
+        return writeContext.deleteFrom(ARTICLES)
+                .where(ARTICLES.SLUG.eq(slug))
+                .execute();
     }
 
     private ArticleDto mapToDto(Record article) {

@@ -9,4 +9,5 @@ import lombok.Setter;
 public class Article {
     private int id;
     private String slug;
+    private ArticleTranslation translation;
 }

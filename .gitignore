@@ -6,5 +6,8 @@
 # Mac
 .DS_Store
 
+# JOOQ
+src/main/java/jooq
+
 # Maven
 target/

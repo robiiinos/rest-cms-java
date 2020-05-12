@@ -1,8 +1,10 @@
 package com.github.robiiinos.service.api.external;
 
+import com.github.robiiinos.dao.ArticleDao;
 import com.github.robiiinos.dto.ArticleDto;
 import com.github.robiiinos.model.Article;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import spark.Request;
 import spark.Response;
 import spark.Service;
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 public class ArticleService {
     private static final String PATH = "articles";
 
+    private static final ArticleDao dao = new ArticleDao();
+
     public ArticleService(final Service apiService) {
         registerRoutes(apiService);
     }
@@ -20,23 +24,41 @@ public class ArticleService {
     private void registerRoutes(final Service apiService) {
         apiService.path(PATH, () -> {
 
+            // List of all articles based on the default Language.
+            // Accept a queryParam (locale) to specify the Language.
             apiService.get("", (final Request request, final Response response) -> {
-                return null;
+                String language = request.queryParamOrDefault("locale", null);
+
+                List<Article> articles;
+                articles = language == null
+                        ? dao.findAll()
+                        : dao.findAllByLanguage(language);
+
+                return toDto(articles);
             });
 
+            // List of a slug-specific article based on the default Language.
+            // Accept a queryParam (locale) to specify the Language.
             apiService.get("/:slug", (final Request request, final Response response) -> {
-                return null;
-            });
+                String slug = request.params(":slug");
+                String language = request.queryParamOrDefault("locale", null);
 
-            apiService.get("/:slug/:locale", (final Request request, final Response response) -> {
-                return null;
+                Article article;
+                article = language == null
+                        ? dao.findBySlug(slug)
+                        : dao.findBySlugAndLanguage(slug, language);
+
+                return toDto(article);
             });
 
         });
     }
 
     private ArticleDto toDto(Article article) {
-        return new ModelMapper().map(article, ArticleDto.class);
+        final ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+
+        return mapper.map(article, ArticleDto.class);
     }
 
     private List<ArticleDto> toDto(List<Article> articles) {

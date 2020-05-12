@@ -11,7 +11,6 @@ public class Main {
         // Run migrations on start.
         // Note: This is to ensure database state.
         FlywayService.runMigrations();
-        logger.info("Database has been migrated.");
 
         // Start the server for the public API.
         final PublicServer publicServer = new PublicServer(8080);

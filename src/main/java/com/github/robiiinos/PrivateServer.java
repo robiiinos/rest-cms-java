@@ -3,6 +3,8 @@ package com.github.robiiinos;
 import com.github.robiiinos.service.api.internal.ArticleService;
 import spark.Service;
 
+import javax.validation.ValidationException;
+
 public class PrivateServer extends Server {
     public PrivateServer(final int port) {
         super(port);
@@ -17,7 +19,11 @@ public class PrivateServer extends Server {
 
     @Override
     protected void registerExceptions(final Service apiService) {
-        //
+        apiService.exception(ValidationException.class, (exception, request, response) -> {
+            response.status(400);
+
+            response.body(buildErrorPayload("Invalid Request"));
+        });
 
         logger.info("Private exceptions have been registered.");
     }

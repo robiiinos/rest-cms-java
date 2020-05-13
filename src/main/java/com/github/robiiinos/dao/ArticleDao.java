@@ -71,9 +71,12 @@ public class ArticleDao {
     }
 
     public final int create(CreateArticleRequest articleRequest) {
-        return writeContext.insertInto(ARTICLES)
+        writeContext.insertInto(ARTICLES)
                 .set(ARTICLES.SLUG, articleRequest.getSlug())
+                .returning()
                 .execute();
+
+        return writeContext.lastID().intValue();
     }
 
     public final int update(UpdateArticleRequest articleRequest, String slug) {

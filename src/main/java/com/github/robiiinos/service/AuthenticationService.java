@@ -34,11 +34,11 @@ public class AuthenticationService {
     }
 
     public String getBearerToken(String authorizationHeader) {
-        if (authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             return authorizationHeader.substring(7);
         }
 
-        return null;
+        return "";
     }
 
     public String createToken(User user) {

@@ -15,8 +15,10 @@ import java.util.List;
 @Data
 public class UpdateArticleRequest {
     @NotNull
+    private int id;
+    @NotNull
     @Size(min = 1, max = 255)
     private String slug;
     @NotEmpty
-    private List<UpdateArticleRequest> translations;
+    private List<UpdateArticleTranslationRequest> translations;
 }

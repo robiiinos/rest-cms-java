@@ -1,7 +1,9 @@
 package com.github.robiiinos.service.internal;
 
 import com.github.robiiinos.dao.ArticleDao;
+import com.github.robiiinos.dao.ArticleTranslationDao;
 import com.github.robiiinos.request.internal.CreateArticleRequest;
+import com.github.robiiinos.request.internal.CreateArticleTranslationRequest;
 import com.github.robiiinos.request.internal.UpdateArticleRequest;
 import com.google.gson.Gson;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
@@ -16,13 +18,14 @@ import javax.validation.Validator;
 public class ArticleService {
     private static final String PATH = "articles";
 
+    private static final ArticleDao articleDao = new ArticleDao();
+    private static final ArticleTranslationDao translationDao = new ArticleTranslationDao();
+
     private static final Validator validator = Validation.byDefaultProvider()
             .configure()
             .messageInterpolator(new ParameterMessageInterpolator())
             .buildValidatorFactory()
             .getValidator();
-
-    private static final ArticleDao dao = new ArticleDao();
 
     public ArticleService(final Service apiService) {
         registerRoutes(apiService);
@@ -38,7 +41,12 @@ public class ArticleService {
                     throw new ValidationException();
                 }
 
-                return dao.create(articleRequest);
+                int articleId = articleDao.create(articleRequest);
+                articleRequest.getTranslations()
+                        .parallelStream()
+                        .forEach(t -> translationDao.create(t, articleId));
+
+                return articleId;
             });
 
             apiService.put("/:slug", (final Request request, final Response response) -> {
@@ -48,11 +56,16 @@ public class ArticleService {
                     throw new ValidationException();
                 }
 
-                return dao.update(articleRequest, request.params(":slug"));
+                int result = articleDao.update(articleRequest, request.params(":slug"));
+                articleRequest.getTranslations()
+                        .parallelStream()
+                        .forEach(t -> translationDao.update(t, articleRequest.getId()));
+
+                return result;
             });
 
             apiService.delete("/:slug", (final Request request, final Response response) -> {
-                return dao.delete(request.params(":slug"));
+                return articleDao.delete(request.params(":slug"));
             });
 
         });

@@ -3,6 +3,7 @@ package com.github.robiiinos;
 import com.github.robiiinos.service.AuthenticationService;
 import com.github.robiiinos.service.internal.ArticleService;
 import com.github.robiiinos.service.internal.UserService;
+import com.google.gson.JsonSyntaxException;
 import org.jooq.exception.DataAccessException;
 import spark.Request;
 import spark.Response;
@@ -44,6 +45,12 @@ public class PrivateServer extends Server {
 
     @Override
     protected void registerExceptions(final Service apiService) {
+        apiService.exception(JsonSyntaxException.class, (exception, request, response) -> {
+            response.status(400);
+
+            response.body(buildErrorPayload("Invalid Request"));
+        });
+
         apiService.exception(ValidationException.class, (exception, request, response) -> {
             response.status(400);
 

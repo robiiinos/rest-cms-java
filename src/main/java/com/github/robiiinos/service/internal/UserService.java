@@ -1,4 +1,4 @@
-package com.github.robiiinos.service.api.internal;
+package com.github.robiiinos.service.internal;
 
 import com.github.robiiinos.dao.UserDao;
 import com.github.robiiinos.model.User;

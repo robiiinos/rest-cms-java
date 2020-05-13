@@ -1,4 +1,4 @@
-package com.github.robiiinos.service.api.external;
+package com.github.robiiinos.service.external;
 
 import com.github.robiiinos.dao.ArticleDao;
 import com.github.robiiinos.dto.ArticleDto;

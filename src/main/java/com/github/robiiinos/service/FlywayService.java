@@ -19,10 +19,4 @@ public final class FlywayService {
     {
         flyway.migrate();
     }
-
-    public static void resetDatabase() {
-        flyway.clean();
-
-        runMigrations();
-    }
 }

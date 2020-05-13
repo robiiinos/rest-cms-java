@@ -1,6 +1,6 @@
 package com.github.robiiinos;
 
-import com.github.robiiinos.service.api.external.ArticleService;
+import com.github.robiiinos.service.external.ArticleService;
 import org.jooq.exception.NoDataFoundException;
 import spark.Service;
 
@@ -20,7 +20,6 @@ public class PublicServer extends Server {
 
     @Override
     protected void registerFilters(final Service apiService) {
-        //
     }
 
     @Override

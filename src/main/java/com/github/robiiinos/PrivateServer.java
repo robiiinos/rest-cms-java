@@ -1,8 +1,8 @@
 package com.github.robiiinos;
 
 import com.github.robiiinos.service.AuthenticationService;
-import com.github.robiiinos.service.api.internal.ArticleService;
-import com.github.robiiinos.service.api.internal.UserService;
+import com.github.robiiinos.service.internal.ArticleService;
+import com.github.robiiinos.service.internal.UserService;
 import org.jooq.exception.DataAccessException;
 import spark.Request;
 import spark.Response;

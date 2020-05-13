@@ -175,6 +175,7 @@
                     <password>${password}</password>
                     <locations>
                         <location>db/migration</location>
+                        <location>db/seed</location>
                     </locations>
                 </configuration>
             </plugin>

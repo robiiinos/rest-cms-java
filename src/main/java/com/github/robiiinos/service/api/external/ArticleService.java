@@ -62,6 +62,21 @@ public class ArticleService {
                 return article;
             });
 
+            apiService.get("/search/:slug", (final Request request, final Response response) -> {
+                SlugRequest slugRequest = SlugRequest.builder().slug(request.params(":slug")).build();
+                LocaleRequest localeRequest = LocaleRequest.builder().locale(
+                        request.queryParamOrDefault("locale", "en")
+                ).build();
+
+                if (!validator.validate(slugRequest).isEmpty() || !validator.validate(localeRequest).isEmpty()) {
+                    throw new ValidationException();
+                }
+
+                List<ArticleDto> articles = dao.searchBySlugAndLanguage(slugRequest, localeRequest);
+
+                return articles;
+            });
+
         });
     }
 }

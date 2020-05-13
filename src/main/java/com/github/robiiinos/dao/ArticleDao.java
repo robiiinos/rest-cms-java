@@ -40,6 +40,19 @@ public class ArticleDao {
         return mapToDto(articles);
     }
 
+    public final List<ArticleDto> searchBySlugAndLanguage(SlugRequest slugRequest, LocaleRequest localeRequest) {
+        Result<Record> articles = readContext.select()
+                .from(ARTICLES)
+                .join(ARTICLE_TRANSLATIONS)
+                .on(ARTICLE_TRANSLATIONS.ARTICLE_ID.eq(ARTICLES.ID))
+                .where(ARTICLES.SLUG.likeIgnoreCase("%" + slugRequest.getSlug() + "%"))
+                .and(ARTICLE_TRANSLATIONS.LOCALE.eq(localeRequest.getLocale()))
+                .orderBy(ARTICLES.ID)
+                .fetch();
+
+        return mapToDto(articles);
+    }
+
     public final ArticleDto findBySlugAndLanguage(SlugRequest slugRequest, LocaleRequest localeRequest) {
         Record article = readContext.select()
                 .from(ARTICLES)

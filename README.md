@@ -50,6 +50,10 @@ $ java -jar target/rest-project.jar
 
 > Note: The Maven command will migrate / seed the database on launch.
 
+## Testing
+
+This project contains unit tests with you can see [here](src/test/java/com/github/robiiinos/dao/ArticleDaoTest.java).
+
 ## Database
 
 Database (models, indexes, ...) can be found [here](src/main/resources/db/migration).

@@ -1,4 +1,4 @@
-INSERT INTO `article_translations` (`article_id`, `title`, `content`, `locale`) VALUES (1, "Bitcoin is a cryptocurrency.", "Content.", "en");
+INSERT INTO `article_translations` (`article_id`, `title`, `content`, `locale`) VALUES (1, "Bitcoin is a cryptocurrency", "Content.", "en");
 INSERT INTO `article_translations` (`article_id`, `title`, `content`, `locale`) VALUES (1, "Bitcoin est une cryptomonnaie", "Contenu.", "fr");
 INSERT INTO `article_translations` (`article_id`, `title`, `content`, `locale`) VALUES (1, "Bitcoin 暗号通貨", "内容", "jp");
 

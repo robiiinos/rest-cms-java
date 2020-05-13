@@ -27,7 +27,7 @@ public class PublicServer extends Server {
         apiService.exception(ValidationException.class, (exception, request, response) -> {
             response.status(400);
 
-            response.body(buildErrorPayload("Invalid Request"));
+            response.body(buildErrorPayload("Bad Request"));
         });
 
         apiService.exception(NoDataFoundException.class, (exception, request, response) -> {

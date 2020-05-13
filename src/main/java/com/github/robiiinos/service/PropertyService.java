@@ -8,8 +8,7 @@ public final class PropertyService {
     private PropertyService() {
     }
 
-    public static Properties loadProperties(String propertyFileName)
-    {
+    public static Properties loadProperties(String propertyFileName) {
         final Properties properties = new Properties();
 
         try (final InputStream is = PropertyService.class.getClassLoader().getResourceAsStream(propertyFileName)) {

@@ -3,7 +3,6 @@ package com.github.robiiinos.service.internal;
 import com.github.robiiinos.dao.ArticleDao;
 import com.github.robiiinos.dao.ArticleTranslationDao;
 import com.github.robiiinos.request.internal.CreateArticleRequest;
-import com.github.robiiinos.request.internal.CreateArticleTranslationRequest;
 import com.github.robiiinos.request.internal.UpdateArticleRequest;
 import com.google.gson.Gson;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;

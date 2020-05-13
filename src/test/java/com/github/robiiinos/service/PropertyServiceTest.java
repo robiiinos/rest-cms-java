@@ -18,6 +18,6 @@ public class PropertyServiceTest {
     }
 
     @Test
-    public void runMigrations() {
+    public void loadProperties() {
     }
 }

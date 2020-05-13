@@ -48,19 +48,19 @@ public class PrivateServer extends Server {
         apiService.exception(JsonSyntaxException.class, (exception, request, response) -> {
             response.status(400);
 
-            response.body(buildErrorPayload("Invalid Request"));
+            response.body(buildErrorPayload("Bad Request"));
         });
 
         apiService.exception(ValidationException.class, (exception, request, response) -> {
             response.status(400);
 
-            response.body(buildErrorPayload("Invalid Request"));
+            response.body(buildErrorPayload("Bad Request"));
         });
 
         apiService.exception(DataAccessException.class, (exception, request, response) -> {
             response.status(400);
 
-            response.body(buildErrorPayload("Invalid Request"));
+            response.body(buildErrorPayload("Bad Request"));
         });
 
         logger.info("Private exceptions have been registered.");

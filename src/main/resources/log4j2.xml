@@ -21,6 +21,9 @@
     </Appenders>
 
     <Loggers>
+        <Logger name="org.jooq" level="warn" additivity="false">
+            <AppenderRef ref="STDOUT" />
+        </Logger>
         <Logger name="warnLogger" level="warn">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="LogRotate"/>

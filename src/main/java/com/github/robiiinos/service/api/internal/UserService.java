@@ -2,8 +2,8 @@ package com.github.robiiinos.service.api.internal;
 
 import com.github.robiiinos.dao.UserDao;
 import com.github.robiiinos.model.User;
-import com.github.robiiinos.request.UserLoginRequest;
-import com.github.robiiinos.request.UserRegisterRequest;
+import com.github.robiiinos.request.internal.UserLoginRequest;
+import com.github.robiiinos.request.internal.UserRegisterRequest;
 import com.github.robiiinos.service.AuthenticationService;
 import com.google.gson.Gson;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;

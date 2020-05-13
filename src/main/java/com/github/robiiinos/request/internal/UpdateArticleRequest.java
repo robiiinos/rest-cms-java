@@ -1,4 +1,4 @@
-package com.github.robiiinos.request;
+package com.github.robiiinos.request.internal;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +13,10 @@ import java.util.List;
 @Getter @Setter
 @Builder
 @Data
-public class CreateArticleRequest {
+public class UpdateArticleRequest {
     @NotNull
     @Size(min = 1, max = 255)
     private String slug;
     @NotEmpty
-    private List<CreateArticleTranslationRequest> translations;
+    private List<UpdateArticleRequest> translations;
 }

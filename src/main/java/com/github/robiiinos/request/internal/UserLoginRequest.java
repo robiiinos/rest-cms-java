@@ -1,4 +1,4 @@
-package com.github.robiiinos.request;
+package com.github.robiiinos.request.internal;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +11,11 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 @Builder
 @Data
-public class SlugRequest {
+public class UserLoginRequest {
     @NotNull
-    @Size(min = 1, max = 255)
-    private String slug;
+    @Size(min = 6, max = 64)
+    private String username;
+    @NotNull
+    @Size(min = 8)
+    private String password;
 }

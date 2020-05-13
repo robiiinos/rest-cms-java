@@ -1,4 +1,4 @@
-package com.github.robiiinos.request;
+package com.github.robiiinos.request.internal;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 @Builder
 @Data
-public class UpdateArticleTranslationRequest {
+public class CreateArticleTranslationRequest {
     @NotNull
     @Size(min = 1, max = 255)
     private String title;

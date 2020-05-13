@@ -1,4 +1,4 @@
-package com.github.robiiinos.request;
+package com.github.robiiinos.request.external;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package com.github.robiiinos.service.api.internal;
 
 import com.github.robiiinos.dao.ArticleDao;
-import com.github.robiiinos.request.CreateArticleRequest;
-import com.github.robiiinos.request.UpdateArticleRequest;
+import com.github.robiiinos.request.internal.CreateArticleRequest;
+import com.github.robiiinos.request.internal.UpdateArticleRequest;
 import com.google.gson.Gson;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import spark.Request;

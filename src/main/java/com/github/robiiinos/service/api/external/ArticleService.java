@@ -2,8 +2,8 @@ package com.github.robiiinos.service.api.external;
 
 import com.github.robiiinos.dao.ArticleDao;
 import com.github.robiiinos.dto.ArticleDto;
-import com.github.robiiinos.request.LocaleRequest;
-import com.github.robiiinos.request.SlugRequest;
+import com.github.robiiinos.request.external.LocaleRequest;
+import com.github.robiiinos.request.external.SlugRequest;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import spark.Request;
 import spark.Response;

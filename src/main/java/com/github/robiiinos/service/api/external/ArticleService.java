@@ -2,14 +2,26 @@ package com.github.robiiinos.service.api.external;
 
 import com.github.robiiinos.dao.ArticleDao;
 import com.github.robiiinos.dto.ArticleDto;
+import com.github.robiiinos.request.LocaleRequest;
+import com.github.robiiinos.request.SlugRequest;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 import spark.Request;
 import spark.Response;
 import spark.Service;
 
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 import java.util.List;
 
 public class ArticleService {
     private static final String PATH = "articles";
+
+    private static final Validator validator = Validation.byDefaultProvider()
+            .configure()
+            .messageInterpolator(new ParameterMessageInterpolator())
+            .buildValidatorFactory()
+            .getValidator();
 
     private static final ArticleDao dao = new ArticleDao();
 
@@ -18,25 +30,34 @@ public class ArticleService {
     }
 
     private void registerRoutes(final Service apiService) {
+        // The following API routes accept a QueryParam called locale to localize results.
         apiService.path(PATH, () -> {
 
-            // List of all articles based on the default Language.
-            // Accept a queryParam (locale) to specify the Language.
             apiService.get("", (final Request request, final Response response) -> {
-                String language = request.queryParamOrDefault("locale", "en");
+                LocaleRequest localeRequest = LocaleRequest.builder().locale(
+                        request.queryParamOrDefault("locale", "en")
+                ).build();
 
-                List<ArticleDto> articles = dao.findAllByLanguage(language);
+                if (!validator.validate(localeRequest).isEmpty()) {
+                    throw new ValidationException();
+                }
+
+                List<ArticleDto> articles = dao.findAllByLanguage(localeRequest);
 
                 return articles;
             });
 
-            // List of a slug-specific article based on the default Language.
-            // Accept a queryParam (locale) to specify the Language.
             apiService.get("/:slug", (final Request request, final Response response) -> {
-                String slug = request.params(":slug");
-                String language = request.queryParamOrDefault("locale", "en");
+                SlugRequest slugRequest = SlugRequest.builder().slug(request.params(":slug")).build();
+                LocaleRequest localeRequest = LocaleRequest.builder().locale(
+                        request.queryParamOrDefault("locale", "en")
+                ).build();
 
-                ArticleDto article = dao.findBySlugAndLanguage(slug, language);
+                if (!validator.validate(slugRequest).isEmpty() || !validator.validate(localeRequest).isEmpty()) {
+                    throw new ValidationException();
+                }
+
+                ArticleDto article = dao.findBySlugAndLanguage(slugRequest, localeRequest);
 
                 return article;
             });

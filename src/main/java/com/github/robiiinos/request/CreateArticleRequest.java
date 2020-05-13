@@ -1,6 +1,5 @@
 package com.github.robiiinos.request;
 
-import com.github.robiiinos.model.ArticleTranslation;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -19,5 +18,5 @@ public class CreateArticleRequest {
     @Size(min = 1, max = 255)
     private String slug;
     @NotEmpty
-    private List<ArticleTranslation> translations;
+    private List<CreateArticleTranslationRequest> translations;
 }

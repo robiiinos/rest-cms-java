@@ -4,6 +4,8 @@ import com.github.robiiinos.service.api.external.ArticleService;
 import org.jooq.exception.NoDataFoundException;
 import spark.Service;
 
+import javax.validation.ValidationException;
+
 public class PublicServer extends Server {
     public PublicServer(final int port) {
         super(port);
@@ -18,6 +20,12 @@ public class PublicServer extends Server {
 
     @Override
     protected void registerExceptions(final Service apiService) {
+        apiService.exception(ValidationException.class, (exception, request, response) -> {
+            response.status(400);
+
+            response.body(buildErrorPayload("Invalid Request"));
+        });
+
         apiService.exception(NoDataFoundException.class, (exception, request, response) -> {
             response.status(404);
 

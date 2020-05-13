@@ -41,8 +41,12 @@ public abstract class Server {
 
         registerRoutes(apiService);
 
+        registerFilters(apiService);
+
         registerExceptions(apiService);
 
+        // Ensure the ContentType and Server headers are set / obfuscated.
+        // Note: ContentType is assured by a global ResponseTransformer.
         apiService.after((Request request, Response response) -> {
             response.header("Content-Type", contentTypeHeader);
 
@@ -50,6 +54,7 @@ public abstract class Server {
             response.header("Server", serverHeader);
         });
 
+        // Log all request parameters to help debug the application in dev.
         apiService.afterAfter("*", (Request request, Response response) -> {
             logger.debug("Service::{} => [{}] HTTP {} - {} {}",
                     apiService.port(),
@@ -65,6 +70,8 @@ public abstract class Server {
     }
 
     protected abstract void registerRoutes(final Service apiService);
+
+    protected abstract void registerFilters(final Service apiService);
 
     protected abstract void registerExceptions(final Service apiService);
 

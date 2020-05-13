@@ -29,7 +29,7 @@ public class ArticleService {
     }
 
     private void registerRoutes(final Service apiService) {
-        apiService.path(PATH, () -> {
+        apiService.path("/p/" + PATH, () -> {
 
             apiService.post("", (final Request request, final Response response) -> {
                 CreateArticleRequest articleRequest = new Gson().fromJson(request.body(), CreateArticleRequest.class);

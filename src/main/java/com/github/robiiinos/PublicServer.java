@@ -19,6 +19,11 @@ public class PublicServer extends Server {
     }
 
     @Override
+    protected void registerFilters(final Service apiService) {
+        //
+    }
+
+    @Override
     protected void registerExceptions(final Service apiService) {
         apiService.exception(ValidationException.class, (exception, request, response) -> {
             response.status(400);

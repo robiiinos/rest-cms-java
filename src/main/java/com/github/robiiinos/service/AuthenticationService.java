@@ -18,6 +18,7 @@ public class AuthenticationService {
 
     private static final String algorithm;
     private static final String issuer = "rest-cms-java";
+    private static final long ttl = 3600000L; // 3600000L - 1 hour in ms
 
     static {
         authProperties = PropertyService.loadProperties(AUTH_PROPERTIES);
@@ -43,7 +44,7 @@ public class AuthenticationService {
 
     public String createToken(User user) {
         Date now = new Date();
-        Date exp = new Date(now.getTime() + 3600000L);
+        Date exp = new Date(now.getTime() + ttl);
 
         return JWT.create()
                 .withIssuedAt(now)

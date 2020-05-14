@@ -4,79 +4,55 @@ import com.github.robiiinos.dao.ArticleDao;
 import com.github.robiiinos.dto.ArticleDto;
 import com.github.robiiinos.request.external.LocaleRequest;
 import com.github.robiiinos.request.external.SlugRequest;
-import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
-import spark.Request;
-import spark.Response;
-import spark.Service;
-
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
+import com.github.robiiinos.request.internal.CreateArticleRequest;
+import org.jooq.Record;
+import org.jooq.Result;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static jooq.generated.Tables.ARTICLES;
+import static jooq.generated.Tables.ARTICLE_TRANSLATIONS;
 
 public class ArticleService {
-    private static final String PATH = "articles";
+    private static final ArticleDao articleDao = new ArticleDao();
 
-    private static final Validator validator = Validation.byDefaultProvider()
-            .configure()
-            .messageInterpolator(new ParameterMessageInterpolator())
-            .buildValidatorFactory()
-            .getValidator();
-
-    private static final ArticleDao dao = new ArticleDao();
-
-    public ArticleService(final Service apiService) {
-        registerRoutes(apiService);
+    public ArticleService() {
     }
 
-    private void registerRoutes(final Service apiService) {
-        // The following API routes accept a QueryParam called locale to localize results.
-        apiService.path(PATH, () -> {
+    public List<ArticleDto> listArticlesWithTranslations(LocaleRequest localeRequest) {
+        return toDto(
+                articleDao.findAllByLanguage(localeRequest)
+        );
+    }
 
-            apiService.get("", (final Request request, final Response response) -> {
-                LocaleRequest localeRequest = LocaleRequest.builder().locale(
-                        request.queryParamOrDefault("locale", "en")
-                ).build();
+    public ArticleDto findArticleBySlugAndLanguageWithTranslations(SlugRequest slugRequest, LocaleRequest localeRequest) {
+        return toDto(
+                articleDao.findBySlugAndLanguage(slugRequest, localeRequest)
+        );
+    }
 
-                if (!validator.validate(localeRequest).isEmpty()) {
-                    throw new ValidationException();
-                }
+    public List<ArticleDto> searchArticlesBySlugAndLanguageWithTranslations(SlugRequest slugRequest, LocaleRequest localeRequest) {
+        return toDto(
+                articleDao.searchBySlugAndLanguage(slugRequest, localeRequest)
+        );
+    }
 
-                List<ArticleDto> articles = dao.findAllByLanguage(localeRequest);
+    private ArticleDto toDto(Record article) {
+        return article.map(r -> ArticleDto.builder()
+                .id(r.getValue(ARTICLE_TRANSLATIONS.ID))
+                .slug(r.getValue(ARTICLES.SLUG))
+                .title(r.getValue(ARTICLE_TRANSLATIONS.TITLE))
+                .content(r.getValue(ARTICLE_TRANSLATIONS.CONTENT))
+                .locale(r.getValue(ARTICLE_TRANSLATIONS.LOCALE))
+                .translations(
+                        articleDao.findAllTranslationsBySlug(r.getValue(ARTICLES.SLUG), r.getValue(ARTICLE_TRANSLATIONS.LOCALE))
+                )
+                .build());
+    }
 
-                return articles;
-            });
-
-            apiService.get("/:slug", (final Request request, final Response response) -> {
-                SlugRequest slugRequest = SlugRequest.builder().slug(request.params(":slug")).build();
-                LocaleRequest localeRequest = LocaleRequest.builder().locale(
-                        request.queryParamOrDefault("locale", "en")
-                ).build();
-
-                if (!validator.validate(slugRequest).isEmpty() || !validator.validate(localeRequest).isEmpty()) {
-                    throw new ValidationException();
-                }
-
-                ArticleDto article = dao.findBySlugAndLanguage(slugRequest, localeRequest);
-
-                return article;
-            });
-
-            apiService.get("/search/:slug", (final Request request, final Response response) -> {
-                SlugRequest slugRequest = SlugRequest.builder().slug(request.params(":slug")).build();
-                LocaleRequest localeRequest = LocaleRequest.builder().locale(
-                        request.queryParamOrDefault("locale", "en")
-                ).build();
-
-                if (!validator.validate(slugRequest).isEmpty() || !validator.validate(localeRequest).isEmpty()) {
-                    throw new ValidationException();
-                }
-
-                List<ArticleDto> articles = dao.searchBySlugAndLanguage(slugRequest, localeRequest);
-
-                return articles;
-            });
-
-        });
+    private List<ArticleDto> toDto(Result<Record> articles) {
+        return articles.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 }

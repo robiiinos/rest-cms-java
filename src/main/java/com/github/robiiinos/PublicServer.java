@@ -1,6 +1,6 @@
 package com.github.robiiinos;
 
-import com.github.robiiinos.service.external.ArticleService;
+import com.github.robiiinos.controller.external.ArticleController;
 import org.jooq.exception.NoDataFoundException;
 import spark.Service;
 
@@ -13,7 +13,7 @@ public class PublicServer extends Server {
 
     @Override
     protected void registerRoutes(final Service apiService) {
-        new ArticleService(apiService);
+        new ArticleController(apiService);
 
         logger.info("Public routes have been registered.");
     }

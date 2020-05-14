@@ -1,8 +1,8 @@
 package com.github.robiiinos;
 
+import com.github.robiiinos.controller.internal.ArticleController;
+import com.github.robiiinos.controller.internal.UserController;
 import com.github.robiiinos.service.AuthenticationService;
-import com.github.robiiinos.service.internal.ArticleService;
-import com.github.robiiinos.service.internal.UserService;
 import com.google.gson.JsonSyntaxException;
 import org.jooq.exception.DataAccessException;
 import spark.Request;
@@ -18,9 +18,9 @@ public class PrivateServer extends Server {
 
     @Override
     protected void registerRoutes(final Service apiService) {
-        new UserService(apiService);
+        new UserController(apiService);
 
-        new ArticleService(apiService);
+        new ArticleController(apiService);
 
         logger.info("Private routes have been registered.");
     }

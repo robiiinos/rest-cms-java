@@ -52,7 +52,7 @@ $ java -jar target/rest-project.jar
 
 ## Testing
 
-This project contains unit tests with you can see [here](src/test/java/com/github/robiiinos/dao/ArticleDaoTest.java).
+This project contains unit tests with you can see [here](src/test/java/com/github/robiiinos/service/external/ArticleServiceTest.java).
 
 ## Database
 

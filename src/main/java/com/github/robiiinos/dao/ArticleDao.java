@@ -2,7 +2,6 @@ package com.github.robiiinos.dao;
 
 import com.github.robiiinos.datasource.ReadDataSource;
 import com.github.robiiinos.datasource.WriteDataSource;
-import com.github.robiiinos.dto.ArticleDto;
 import com.github.robiiinos.dto.ArticleTranslationDto;
 import com.github.robiiinos.request.internal.CreateArticleRequest;
 import com.github.robiiinos.request.external.LocaleRequest;
@@ -16,7 +15,6 @@ import org.jooq.exception.NoDataFoundException;
 import org.jooq.impl.DSL;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static jooq.generated.Tables.*;
 
@@ -29,49 +27,49 @@ public class ArticleDao {
     public ArticleDao() {
     }
 
-    public final List<ArticleDto> searchBySlugAndLanguage(SlugRequest slugRequest, LocaleRequest localeRequest) {
+    public final Result<Record> searchBySlugAndLanguage(SlugRequest slugRequest, LocaleRequest localeRequest) {
         Result<Record> articles = readContext.select()
                 .from(ARTICLES)
                 .join(ARTICLE_TRANSLATIONS)
                 .on(ARTICLE_TRANSLATIONS.ARTICLE_ID.eq(ARTICLES.ID))
                 .where(ARTICLES.SLUG.likeIgnoreCase("%" + slugRequest.getSlug() + "%"))
                 .and(ARTICLE_TRANSLATIONS.LOCALE.eq(localeRequest.getLocale()))
-                .orderBy(ARTICLES.ID)
+                .orderBy(ARTICLES.ID.desc())
                 .fetch();
 
-        return mapToDto(articles);
+        return articles;
     }
 
-    public final List<ArticleDto> findAllByLanguage(LocaleRequest localeRequest) {
+    public final Result<Record> findAllByLanguage(LocaleRequest localeRequest) {
         Result<Record> articles = readContext.select()
                 .from(ARTICLES)
                 .join(ARTICLE_TRANSLATIONS)
                 .on(ARTICLE_TRANSLATIONS.ARTICLE_ID.eq(ARTICLES.ID))
                 .where(ARTICLE_TRANSLATIONS.LOCALE.eq(localeRequest.getLocale()))
-                .orderBy(ARTICLES.ID)
+                .orderBy(ARTICLES.ID.desc())
                 .fetch();
 
-        return mapToDto(articles);
+        return articles;
     }
 
-    public final ArticleDto findBySlugAndLanguage(SlugRequest slugRequest, LocaleRequest localeRequest) {
+    public final Record findBySlugAndLanguage(SlugRequest slugRequest, LocaleRequest localeRequest) {
         Record article = readContext.select()
                 .from(ARTICLES)
                 .join(ARTICLE_TRANSLATIONS)
                 .on(ARTICLE_TRANSLATIONS.ARTICLE_ID.eq(ARTICLES.ID))
                 .where(ARTICLES.SLUG.eq(slugRequest.getSlug()))
                 .and(ARTICLE_TRANSLATIONS.LOCALE.eq(localeRequest.getLocale()))
-                .orderBy(ARTICLES.ID)
+                .orderBy(ARTICLES.ID.desc())
                 .fetchOne();
 
         if (article == null) {
             throw new NoDataFoundException();
         }
 
-        return mapToDto(article);
+        return article;
     }
 
-    private List<ArticleTranslationDto> findAllTranslationsBySlug(String slug, String locale) {
+    public List<ArticleTranslationDto> findAllTranslationsBySlug(String slug, String locale) {
         return readContext.select(
                 ARTICLES.SLUG,
                 ARTICLE_TRANSLATIONS.TITLE,
@@ -83,7 +81,7 @@ public class ArticleDao {
                 .on(ARTICLE_TRANSLATIONS.ARTICLE_ID.eq(ARTICLES.ID))
                 .where(ARTICLES.SLUG.eq(slug))
                 .and(ARTICLE_TRANSLATIONS.LOCALE.notEqual(locale))
-                .orderBy(ARTICLES.ID)
+                .orderBy(ARTICLE_TRANSLATIONS.LOCALE.asc())
                 .fetchInto(ArticleTranslationDto.class);
     }
 
@@ -107,22 +105,5 @@ public class ArticleDao {
         return writeContext.deleteFrom(ARTICLES)
                 .where(ARTICLES.SLUG.eq(slug))
                 .execute();
-    }
-
-    private ArticleDto mapToDto(Record article) {
-        return article.map(r -> ArticleDto.builder()
-                .id(r.getValue(ARTICLE_TRANSLATIONS.ID))
-                .slug(r.getValue(ARTICLES.SLUG))
-                .title(r.getValue(ARTICLE_TRANSLATIONS.TITLE))
-                .content(r.getValue(ARTICLE_TRANSLATIONS.CONTENT))
-                .locale(r.getValue(ARTICLE_TRANSLATIONS.LOCALE))
-                .translations(findAllTranslationsBySlug(r.getValue(ARTICLES.SLUG), r.getValue(ARTICLE_TRANSLATIONS.LOCALE)))
-                .build());
-    }
-
-    private List<ArticleDto> mapToDto(Result<Record> articles) {
-        return articles.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
     }
 }

@@ -69,11 +69,11 @@ public class ArticleServiceTest {
 
         assertThat(results, hasSize(articlesDto.size()));
 
-        assertThat(results.get(1).getId(), equalTo(articlesDto.get(1).getId()));
-        assertThat(results.get(1).getSlug(), equalTo(articlesDto.get(1).getSlug()));
-        assertThat(results.get(1).getTitle(), equalTo(articlesDto.get(1).getTitle()));
-        assertThat(results.get(1).getContent(), equalTo(articlesDto.get(1).getContent()));
-        assertThat(results.get(1).getLocale(), equalTo(articlesDto.get(1).getLocale()));
+        assertThat(results.get(1).getId(), equalTo(articlesDto.get(3).getId()));
+        assertThat(results.get(1).getSlug(), equalTo(articlesDto.get(3).getSlug()));
+        assertThat(results.get(1).getTitle(), equalTo(articlesDto.get(3).getTitle()));
+        assertThat(results.get(1).getContent(), equalTo(articlesDto.get(3).getContent()));
+        assertThat(results.get(1).getLocale(), equalTo(articlesDto.get(3).getLocale()));
     }
 
     @Test
@@ -101,11 +101,11 @@ public class ArticleServiceTest {
 
         assertThat(results, hasSize(articlesDto.size()));
 
-        assertThat(results.get(0).getId(), equalTo(articlesDto.get(0).getId()));
-        assertThat(results.get(0).getSlug(), equalTo(articlesDto.get(0).getSlug()));
-        assertThat(results.get(0).getTitle(), equalTo(articlesDto.get(0).getTitle()));
-        assertThat(results.get(0).getContent(), equalTo(articlesDto.get(0).getContent()));
-        assertThat(results.get(0).getLocale(), equalTo(articlesDto.get(0).getLocale()));
+        assertThat(results.get(0).getId(), equalTo(articlesDto.get(4).getId()));
+        assertThat(results.get(0).getSlug(), equalTo(articlesDto.get(4).getSlug()));
+        assertThat(results.get(0).getTitle(), equalTo(articlesDto.get(4).getTitle()));
+        assertThat(results.get(0).getContent(), equalTo(articlesDto.get(4).getContent()));
+        assertThat(results.get(0).getLocale(), equalTo(articlesDto.get(4).getLocale()));
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.github.robiiinos.dao;
 import com.github.robiiinos.datasource.ReadDataSource;
 import com.github.robiiinos.datasource.WriteDataSource;
 import com.github.robiiinos.dto.ArticleDto;
+import com.github.robiiinos.dto.ArticleTranslationDto;
 import com.github.robiiinos.request.internal.CreateArticleRequest;
 import com.github.robiiinos.request.external.LocaleRequest;
 import com.github.robiiinos.request.external.SlugRequest;
@@ -70,6 +71,22 @@ public class ArticleDao {
         return mapToDto(article);
     }
 
+    private List<ArticleTranslationDto> findAllTranslationsBySlug(String slug, String locale) {
+        return readContext.select(
+                ARTICLES.SLUG,
+                ARTICLE_TRANSLATIONS.TITLE,
+                ARTICLE_TRANSLATIONS.CONTENT,
+                ARTICLE_TRANSLATIONS.LOCALE
+        )
+                .from(ARTICLES)
+                .join(ARTICLE_TRANSLATIONS)
+                .on(ARTICLE_TRANSLATIONS.ARTICLE_ID.eq(ARTICLES.ID))
+                .where(ARTICLES.SLUG.eq(slug))
+                .and(ARTICLE_TRANSLATIONS.LOCALE.notEqual(locale))
+                .orderBy(ARTICLES.ID)
+                .fetchInto(ArticleTranslationDto.class);
+    }
+
     public final int create(CreateArticleRequest articleRequest) {
         writeContext.insertInto(ARTICLES)
                 .set(ARTICLES.SLUG, articleRequest.getSlug())
@@ -99,6 +116,7 @@ public class ArticleDao {
                 .title(r.getValue(ARTICLE_TRANSLATIONS.TITLE))
                 .content(r.getValue(ARTICLE_TRANSLATIONS.CONTENT))
                 .locale(r.getValue(ARTICLE_TRANSLATIONS.LOCALE))
+                .translations(findAllTranslationsBySlug(r.getValue(ARTICLES.SLUG), r.getValue(ARTICLE_TRANSLATIONS.LOCALE)))
                 .build());
     }
 

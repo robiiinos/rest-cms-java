@@ -6,16 +6,12 @@ import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter @Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ArticleDto {
-    private int id;
+public class ArticleTranslationDto {
     private String slug;
     private String title;
     private String content;
     private String locale;
-    private List<ArticleTranslationDto> translations;
 }

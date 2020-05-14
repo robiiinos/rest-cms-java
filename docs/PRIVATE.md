@@ -42,7 +42,8 @@ Payload :
 Response :
 
 ```
-1
+# 201 - Created
+Payload
 ```
 
 ### PUT /p/articles/:slug
@@ -79,7 +80,8 @@ Payload :
 Response :
 
 ```
-1
+# 200 - OK
+Payload
 ```
 
 ### DELETE /p/articles/:slug
@@ -95,7 +97,8 @@ $ curl -X DELETE http://127.0.0.1:8084/p/articles/my-slug
 Response :
 
 ```
-1
+# 200 - OK
+true
 ```
 
 ## Users
@@ -149,6 +152,7 @@ Payload :
 Response :
 
 ```
+# 200 - OK
 "my-token"
 ```
 
@@ -159,7 +163,7 @@ Response :
 > In case the request payload is invalid.
 
 ```
-400 - Bad Request
+# 400 - Bad Request
 {
     "success": "false",
     "message": "Bad Request"

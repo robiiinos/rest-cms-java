@@ -20,13 +20,23 @@ $ curl -X GET http://127.0.0.1:8080/articles?locale=fr
 Response :
 
 ```
+# 200 - OK
 [
     {
         "id": 1,
         "slug": "what-is-bitcoin",
         "title": "What is Bitcoin ?",
         "content": "A cryptocurrency ...",
-        "locale": "en"
+        "locale": "en",
+        "translations": [
+            {
+                "slug": "what-is-bitcoin",
+                "title": "Bitcoin est une cryptomonnaie",
+                "content": "Contenu.",
+                "locale": "fr"
+            },
+            ...
+        ]
     },
     ...
 ]
@@ -48,12 +58,22 @@ $ curl -X GET http://127.0.0.1:8080/articles/what-is-bitcoin?locale=fr
 Response :
 
 ```
+# 200 - OK
 {
     "id": 1,
     "slug": "what-is-bitcoin",
     "title": "What is Bitcoin ?",
     "content": "A cryptocurrency ...",
-    "locale": "en"
+    "locale": "en",
+    "translations": [
+        {
+            "slug": "what-is-bitcoin",
+            "title": "Bitcoin est une cryptomonnaie",
+            "content": "Contenu.",
+            "locale": "fr"
+        },
+        ...
+    ]
 }
 ```
 
@@ -73,12 +93,22 @@ $ curl -X GET http://127.0.0.1:8080/articles/search/bitcoin?locale=fr
 Response :
 
 ```
+# 200 - OK
 {
     "id": 1,
     "slug": "what-is-bitcoin",
     "title": "What is Bitcoin ?",
     "content": "A cryptocurrency ...",
-    "locale": "en"
+    "locale": "en",
+    "translations": [
+        {
+            "slug": "what-is-bitcoin",
+            "title": "Bitcoin est une cryptomonnaie",
+            "content": "Contenu.",
+            "locale": "fr"
+        },
+        ...
+    ]
 }
 ```
 
@@ -87,7 +117,7 @@ Response :
 > In case a locale does not exist.
 
 ```
-400 - Bad Request
+# 400 - Bad Request
 {
     "success": "false",
     "message": "Bad Request"
@@ -97,7 +127,7 @@ Response :
 > In case an article is Not Found.
 
 ```
-404 - Not Found
+# 404 - Not Found
 {
     "success": "false",
     "message": "Not Found"

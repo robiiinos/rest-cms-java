@@ -45,7 +45,8 @@ public class ArticleService {
                         .parallelStream()
                         .forEach(t -> translationDao.create(t, articleId));
 
-                return articleId;
+                response.status(201);
+                return articleRequest;
             });
 
             apiService.put("/:slug", (final Request request, final Response response) -> {
@@ -55,12 +56,12 @@ public class ArticleService {
                     throw new ValidationException();
                 }
 
-                int result = articleDao.update(articleRequest, request.params(":slug"));
+                articleDao.update(articleRequest, request.params(":slug"));
                 articleRequest.getTranslations()
                         .parallelStream()
                         .forEach(t -> translationDao.update(t, articleRequest.getId()));
 
-                return result;
+                return articleRequest;
             });
 
             apiService.delete("/:slug", (final Request request, final Response response) -> {

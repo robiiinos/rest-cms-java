@@ -5,7 +5,6 @@ JAVA project offering a public and private API, with authentication, for a Conte
 The application will start 2 multi-threaded Jetty server, each serving their respective RESTful API (one for public, one for private).
 All public endpoints are read-only; and support localization, up to `n` languages; the default language is `en` for English.
 
-
 ## Technological stack
 
 ### Requirements
@@ -45,20 +44,26 @@ Before all, you should fill the [*.properties](src/main/resources) files in the 
 $ mvn package
 
 // Start the application.
-$ java -jar target/rest-project.jar
+$ java -jar target/rest-cms-java.jar
 ```
 
 > Note: The Maven command will migrate / seed the database on launch.
 
 ## Testing
 
-This project contains unit tests with you can see [here](src/test/java/com/github/robiiinos/service/external/ArticleServiceTest.java).
+This project contains unit tests which you can see [here](src/test/java/com/github/robiiinos/service/external/ArticleServiceTest.java).
 
 ## Database
 
 Database (models, indexes, ...) can be found [here](src/main/resources/db/migration).
 
-> Explications: The `Article` model serves as a base model for every article-related field that do no require to be translated (such as the slug, status, ...). The `ArticleTranslation` is a child of `Article` where every translatable-field for each article is store; including the default language (English - en). A last table `Language` list every available languages (and locale code for the API), these fields can be extended to store voice for a text-to-speech system, ...
+- Explanations:
+
+The `Article` model serves as a base model for every article-related field that do no require to be translated (such as the slug, status, ...).
+
+The `ArticleTranslation` is a child of `Article` where every translatable-field for each article is store; including the default language.
+
+A last table `Language` list every available languages (and locale code for the API), these fields can be extended to store voice for a text-to-speech system, ...
 
 ## Documentation
 

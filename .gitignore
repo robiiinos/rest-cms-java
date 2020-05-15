@@ -9,5 +9,9 @@
 # JOOQ
 src/main/java/jooq
 
+# Project
+src/main/resources/datasource.properties
+src/main/resources/auth.properties
+
 # Maven
 target/

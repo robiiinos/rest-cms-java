@@ -37,17 +37,54 @@ All public endpoints are read-only; and support localization, up to `n` language
 
 ## Usage
 
-Before all, you should fill the [*.properties](src/main/resources) files in the resources directory with your configuration. This includes the database configuration.
+#### 1. Setup the database
+
+- Install a MySQL 8.x server.
+
+- Create a user
+
+```
+$ CREATE USER 'my_username'@'%' IDENTIFIED BY 'my_password';
+```
+
+- Create the database
+
+```
+$ CREATE DATABASE rest_cms_java CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+- Give permissions to the user for the database
+
+```
+$ GRANT ALL PRIVILEGES ON rest_cms_java.* TO 'my_username'@'%';
+$ FLUSH PRIVILEGES;
+```
+
+#### 2. Fill the project property files
 
 ```bash
-// Compile & Package project
-$ mvn package
+// Configuration for the database
+$ vim src/main/resources/datasource.properties
 
-// Start the application.
-$ java -jar target/rest-cms-java.jar
+// Configuration for the JWT auth (secret key for signing)
+$ vim src/main/resources/auth.properties
+```
+
+> Note: The `schema` property is here in case your database schema is not the same as your database name. Fill this property with your database name or, if you changed it manually, your main schema for this project.
+
+#### 3. Compile / Package the project
+
+```bash
+$ mvn package
 ```
 
 > Note: The Maven command will migrate / seed the database on launch.
+
+#### 4. Run the project
+
+```bash
+$ java -jar target/rest-cms-java.jar
+```
 
 ## Testing
 
@@ -55,7 +92,7 @@ This project contains unit tests which you can see [here](src/test/java/com/gith
 
 ## Database
 
-Database (models, indexes, ...) can be found [here](src/main/resources/db/migration).
+Database (models, indexes, ...) can be found [here](src/main/resources/db/migrations).
 
 - Explanations:
 

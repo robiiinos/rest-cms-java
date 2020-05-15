@@ -179,9 +179,13 @@
                     <user>${username}</user>
                     <!--suppress UnresolvedMavenProperty -->
                     <password>${password}</password>
+                    <schemas>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <schema>${schema}</schema>
+                    </schemas>
                     <locations>
-                        <location>db/migration</location>
-                        <location>db/seed</location>
+                        <location>filesystem:src/main/resources/db/migrations</location>
+                        <location>filesystem:src/main/resources/db/seeds</location>
                     </locations>
                 </configuration>
             </plugin>
@@ -219,7 +223,8 @@
                     <generator>
                         <database>
                             <name>org.jooq.meta.mysql.MySQLDatabase</name>
-                            <inputSchema>academy</inputSchema>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <inputSchema>${schema}</inputSchema>
                             <includes>.*</includes>
                             <excludes>flyway_schema_history</excludes>
                         </database>
@@ -268,7 +273,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>rest-project</finalName>
+                    <finalName>rest-cms-java</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>

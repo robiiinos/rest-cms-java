@@ -70,7 +70,7 @@ $ vim src/main/resources/datasource.properties
 $ vim src/main/resources/auth.properties
 ```
 
-> Note: The `schema` property is here in case your database schema is not the same as your database name. Fill this property with your database name or, if you changed it manually, your main schema for this project.
+> Note: The `schema` property is here in case your database schema is not the same as your database name. Fill this property with your database name or, if you changed it manually, your main schema for this project. 
 
 #### 3. Compile / Package the project
 
@@ -84,6 +84,16 @@ $ mvn package
 
 ```bash
 $ java -jar target/rest-cms-java.jar
+```
+
+## Troubleshooting
+
+If you have any errors due to JOOQ, make sure that your [datasource property file](src/main/resources/datasource.properties) is filled with the correct information; and that the migrations / seeders are deployed.
+
+Migrations and seeding of the database is done by FlyWay package building; if you experience any issue with FlyWay; please run the following command manually :
+
+```
+$ mvn flyway:migrate -Dflyway.url="..."  -Dflyway.schemas=... -Dflyway.user=... -Dflyway.password=...
 ```
 
 ## Testing

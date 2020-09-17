@@ -154,7 +154,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>6.4.1</version>
+                <version>6.5.6</version>
                 <executions>
                     <execution>
                         <phase>initialize</phase>
